@@ -2,7 +2,7 @@ import React from "react";
 
 const ListLoading = () => {
   return (
-    <div className="w-full danielo">
+    <div className="w-full">
       <div className="overflow-x-auto">
         <table className="table">
           <thead>

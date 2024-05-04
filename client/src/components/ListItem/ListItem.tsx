@@ -1,17 +1,17 @@
+import { ListItemType } from "@/Types";
 import React from "react";
 import { FaCheck, FaRegTrashCan } from "react-icons/fa6";
 
-export interface ListItemType {
-  id: number;
-  title: string;
-  description: string;
-  completed: boolean;
-}
-
-const ListItem = ({ id, title, description, completed }: ListItemType) => {
+const ListItem = ({
+  id,
+  title,
+  description,
+  completed,
+  number,
+}: ListItemType) => {
   return (
     <tr className="hover">
-      <th>{id}</th>
+      <th>{number + 1}</th>
       <td>{title}</td>
       <td>{description}</td>
       <td>
@@ -19,7 +19,7 @@ const ListItem = ({ id, title, description, completed }: ListItemType) => {
           className="btn btn-square btn-xs btn-outline btn-success mr-3"
           title="Done"
           aria-label="Done"
-          // onClick={() => dispatch(toggleTodo(1))}
+          //onClick={() => dispatch(toggleTodo(1))}
         >
           <FaCheck />
         </button>

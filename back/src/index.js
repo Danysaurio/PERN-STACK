@@ -13,7 +13,10 @@ app.use(express.json());
 app.use(taskRoutes);
 
 app.use((err, req, res, next) => {
+  console.log("🚀 ~ app.use ~ err:", err);
+
   return res.json({
+    errror: true,
     message: err.message,
   });
 });

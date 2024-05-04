@@ -1,20 +1,26 @@
 
-import { createSlice } from '@reduxjs/toolkit';
+import { ListItemType, TasksState } from "@/Types";
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+const initialState: TasksState = {
+  list: [],
+}
 
 const tasksSlice = createSlice({
   name: 'tasks',
-  initialState: {
-    list: []
-  },
+  initialState,
   reducers: {
     toggleTodo(state, action) {
 
     },
-    fetchTasksSuccess(state, action) {
-      console.log("🚀 ~ fetchTasksSuccess ~ action.payload;:", action.payload);
-
+    fetchTasksSuccess(state, action: PayloadAction<ListItemType[]>) {
       state.list = action.payload;
     },
+    addNewTask(state, action: PayloadAction<ListItemType>) {
+      const newItem = action.payload;
+      state.list.push(newItem);
+    }
   },
 });
 
