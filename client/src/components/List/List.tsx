@@ -5,25 +5,23 @@ import ListItem from "../ListItem";
 import ListLoading from "./ListLoading";
 import { getAllTask } from "@/services";
 import { ListItemType, Todos } from "@/Types";
+import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 
 const List = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const todos: ListItemType[] = useSelector((state: Todos) => state.todos.list);
-  const dispatch = useDispatch();
-  const { fetchTasksSuccess } = tasksActions;
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const todos: ListItemType[] = useSelector((state: Todos) => state.todos.list);
+  // const dispatch = useDispatch();
+  // const { fetchTasksSuccess } = tasksActions;
 
-  useEffect(() => {
-    getAllTask().then((res) => {
-      dispatch(fetchTasksSuccess(res));
-      setLoading(false);
-    });
-  }, []);
+  const { data: todoList, isLoading, isError } = useFirebaseTodos().getAllTask;
 
-  if (loading) {
+  if (isError) return <p>Error al cargar las tareas.</p>;
+
+  if (isLoading) {
     return <ListLoading />;
   }
 
-  if (todos.length === 0) {
+  if (!todoList || todoList.length === 0) {
     return (
       <div className="text-center w-full text-xl">
         <span>No tienes nada</span>
@@ -44,7 +42,7 @@ const List = () => {
             </tr>
           </thead>
           <tbody>
-            {todos.map((todo, i) => (
+            {todoList.map((todo, i) => (
               <ListItem key={`item-${i}`} {...todo} number={i} />
             ))}
           </tbody>

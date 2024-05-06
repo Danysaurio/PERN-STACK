@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { tasksActions } from "@/store/tasksSlice";
 import { addTask } from "@/services";
 import { Inputs } from "@/Types";
+import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 
 const Addform = () => {
   const {
@@ -13,20 +14,13 @@ const Addform = () => {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const dispatch = useDispatch();
+  const { addNewTask } = useFirebaseTodos();
 
-  const { mutate: addTaskMutation, isLoading } = useMutation(addTask, {
-    onSuccess: (data) => {
-      if (data.error) {
-      }
+  const { mutateAsync, isLoading } = addNewTask;
 
-      dispatch(tasksActions.addNewTask(data));
-      reset();
-    },
-  });
-
-  const handleAddTask: SubmitHandler<Inputs> = (newTask) => {
-    addTaskMutation(newTask);
+  const handleAddTask: SubmitHandler<Inputs> = async (newTask) => {
+    await mutateAsync(newTask);
+    reset();
   };
 
   return (

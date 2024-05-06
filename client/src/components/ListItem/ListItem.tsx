@@ -1,4 +1,6 @@
+import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 import { ListItemType } from "@/Types";
+import classNames from "classnames";
 import React from "react";
 import { FaCheck, FaRegTrashCan } from "react-icons/fa6";
 
@@ -7,10 +9,14 @@ const ListItem = ({
   title,
   description,
   completed,
-  number,
+  number = 0,
 }: ListItemType) => {
+  const cls = classNames(["hover", completed ? "line-through" : ""]);
+
+  const { toggleTask } = useFirebaseTodos();
+
   return (
-    <tr className="hover">
+    <tr className={cls}>
       <th>{number + 1}</th>
       <td>{title}</td>
       <td>{description}</td>

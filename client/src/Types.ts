@@ -1,9 +1,9 @@
 export interface ListItemType {
-  id: number;
+  id: string;
   title: string;
   description: string;
   completed: boolean;
-  number: number;
+  number?: number;
 }
 
 export interface Inputs {
