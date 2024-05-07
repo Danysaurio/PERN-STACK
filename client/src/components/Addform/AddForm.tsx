@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 
-import { tasksActions } from "@/store/tasksSlice";
-import { addTask } from "@/services";
 import { Inputs } from "@/Types";
 import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
+import { alertActions } from "@/store/alertSlice";
+import { setTimeout } from "timers";
 
 const Addform = () => {
   const {
@@ -14,12 +13,28 @@ const Addform = () => {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const { addNewTask } = useFirebaseTodos();
 
+  const dispatch = useDispatch();
+  const { showAlert, closeAlert } = alertActions;
+
+  const { addNewTask } = useFirebaseTodos();
   const { mutateAsync, isLoading } = addNewTask;
 
   const handleAddTask: SubmitHandler<Inputs> = async (newTask) => {
-    await mutateAsync(newTask);
+    await mutateAsync(newTask, {
+      onSuccess: () => {
+        dispatch(
+          showAlert({
+            show: true,
+            title: "Task added successfully",
+            type: "success",
+          })
+        );
+        setTimeout(() => {
+          dispatch(closeAlert());
+        }, 4000);
+      },
+    });
     reset();
   };
 

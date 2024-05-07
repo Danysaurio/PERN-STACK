@@ -8,15 +8,32 @@ import {
   AiOutlineWarning,
 } from "react-icons/ai";
 
-type alertType = "error" | "warning" | "success" | "info";
+export type AlertType = "error" | "warning" | "success" | "info";
 
 interface AlertProps {
-  type: alertType;
+  type: AlertType;
   title: string;
   description?: string;
 }
 
-const getIcon = (type: alertType): JSX.Element => {
+const getClassStyle = (type: AlertType): string => {
+  let classText = "alert-info";
+  switch (type) {
+    case "error":
+      classText = "alert-error";
+
+      break;
+    case "warning":
+      classText = "alert-warning";
+      break;
+    case "success":
+      classText = "alert-success";
+      break;
+  }
+  return classText;
+};
+
+const getIcon = (type: AlertType): JSX.Element => {
   const cls = "w-6 h-6 shrink-0";
   let typeCls: string = type === "info" ? "text-info" : "text-current";
   let Icon: IconType = AiOutlineInfoCircle;
@@ -37,7 +54,7 @@ const getIcon = (type: alertType): JSX.Element => {
 };
 
 const Alert = ({ type, title, description }: AlertProps): JSX.Element => {
-  const cls = classNames(["alert", `alert-${type}`]);
+  const cls = classNames(["alert", getClassStyle(type)]);
 
   return (
     <div role="alert" className={cls}>
@@ -47,7 +64,7 @@ const Alert = ({ type, title, description }: AlertProps): JSX.Element => {
         {description && <div className="text-xs">{description}</div>}
       </div>
       <div>
-        <button className="btn btn-sm">Close</button>
+        <button className="btn btn-sm btn-ghost">Close</button>
       </div>
     </div>
   );

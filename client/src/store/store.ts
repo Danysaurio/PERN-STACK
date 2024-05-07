@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { alertReducer } from "./alertSlice";
-import { tasksReducer } from "./tasksSlice";
+import { modalReducer } from "./modalSlice";
 
 export const store = configureStore({
     reducer: {
-        todos: tasksReducer,
         alert: alertReducer,
+        modal: modalReducer
     }
 })

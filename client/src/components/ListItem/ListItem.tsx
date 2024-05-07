@@ -2,7 +2,8 @@ import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 import { ListItemType } from "@/Types";
 import classNames from "classnames";
 import React from "react";
-import { FaCheck, FaRegTrashCan } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa6";
+import DeleteButton from "./DeleteButton";
 
 const ListItem = ({
   id,
@@ -11,9 +12,15 @@ const ListItem = ({
   completed,
   number = 0,
 }: ListItemType) => {
-  const cls = classNames(["hover", completed ? "line-through" : ""]);
+  const cls = classNames(["hover", completed ? "line-through opacity-30" : ""]);
 
   const { toggleTask } = useFirebaseTodos();
+
+  const { mutateAsync, isLoading } = toggleTask;
+
+  const handleOnDone = async () => {
+    await mutateAsync({ id, completed });
+  };
 
   return (
     <tr className={cls}>
@@ -25,18 +32,12 @@ const ListItem = ({
           className="btn btn-square btn-xs btn-outline btn-success mr-3"
           title="Done"
           aria-label="Done"
-          //onClick={() => dispatch(toggleTodo(1))}
+          onClick={handleOnDone}
+          disabled={isLoading}
         >
           <FaCheck />
         </button>
-        <button
-          className="btn btn-square btn-xs btn-error btn-outline"
-          title="Delete"
-          aria-label="Delete"
-        >
-          <FaRegTrashCan />
-        </button>
-        {/* <DeleteModal /> */}
+        <DeleteButton id={id} titlle={title} />
       </td>
     </tr>
   );

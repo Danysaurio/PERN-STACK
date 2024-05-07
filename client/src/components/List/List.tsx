@@ -1,18 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
-import { tasksActions } from "@/store/tasksSlice";
-import { useEffect, useState } from "react";
 import ListItem from "../ListItem";
 import ListLoading from "./ListLoading";
-import { getAllTask } from "@/services";
-import { ListItemType, Todos } from "@/Types";
 import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 
 const List = () => {
-  // const [loading, setLoading] = useState<boolean>(true);
-  // const todos: ListItemType[] = useSelector((state: Todos) => state.todos.list);
-  // const dispatch = useDispatch();
-  // const { fetchTasksSuccess } = tasksActions;
-
   const { data: todoList, isLoading, isError } = useFirebaseTodos().getAllTask;
 
   if (isError) return <p>Error al cargar las tareas.</p>;

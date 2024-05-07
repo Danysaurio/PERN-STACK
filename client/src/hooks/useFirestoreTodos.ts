@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 
 import { todosStore } from "@/lib/firebase";
 import { ListItemType } from "@/Types";
@@ -26,9 +26,13 @@ const addNewTask = async (newTask: { title: string, description: string }): Prom
 }
 
 const toggleTask = async ({ id, completed }: { id: string, completed: boolean }): Promise<void> => {
-  const taskRef = doc(todosStore, 'taskList', id);
+  const taskRef = doc(todosStore, 'tasksList', id);
   await updateDoc(taskRef, { completed: !completed })
+}
 
+const deleteTask = async (id: string): Promise<void> => {
+  const taskRef = doc(todosStore, 'tasksList', id);
+  await deleteDoc(taskRef);
 }
 
 export const useFirebaseTodos = () => {
@@ -47,10 +51,18 @@ export const useFirebaseTodos = () => {
       queryClient.invalidateQueries('todos');
     }
   })
+
+  const deleteTaskMutation = useMutation(deleteTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos');
+    }
+  })
+
   return {
     getAllTask: getAllTaskQuery,
     addNewTask: addNewTodoMutation,
-    toggleTask: toggleTaskMutation
+    toggleTask: toggleTaskMutation,
+    deleteTask: deleteTaskMutation
   }
 }
 

@@ -7,6 +7,7 @@ import List from "@/components/List";
 import Addform from "@/components/Addform";
 import { store } from "@/store/store";
 import { ReduxAlert } from "@/components/Alert/ReduxAlert";
+import DeleteModal from "@/components/DeleteModal";
 
 const queryclient = new QueryClient();
 
@@ -24,6 +25,7 @@ export default function Home() {
               <List />
             </div>
             <ReduxAlert />
+            <DeleteModal />
           </section>
         </QueryClientProvider>
       </Provider>
