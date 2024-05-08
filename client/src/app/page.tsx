@@ -1,13 +1,14 @@
 "use client";
+
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import Nav from "@/components/Nav";
 import List from "@/components/List";
-import Addform from "@/components/Addform";
 import { store } from "@/store/store";
-import { ReduxAlert } from "@/components/Alert/ReduxAlert";
+import Addform from "@/components/Addform";
 import DeleteModal from "@/components/DeleteModal";
+import { ReduxAlert } from "@/components/Alert/ReduxAlert";
 
 const queryclient = new QueryClient();
 

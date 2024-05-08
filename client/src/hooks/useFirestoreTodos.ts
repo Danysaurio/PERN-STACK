@@ -1,8 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 
-import { todosStore } from "@/lib/firebase";
+import { auth, todosStore } from "@/lib/firebase";
 import { ListItemType } from "@/Types";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+const useLogin = async () => {
+  const userCredential = await signInWithEmailAndPassword(auth, "danyzavala94@gmail.com", "210141257");
+  return userCredential.user;
+}
+
 
 const getTodos = async (): Promise<ListItemType[]> => {
   const querySnapshot = await getDocs(collection(todosStore, "tasksList"));
@@ -58,7 +65,14 @@ export const useFirebaseTodos = () => {
     }
   })
 
+  const logginMutation = useMutation(useLogin, {
+    onSuccess(data, variables, context) {
+      console.log(data)
+    },
+  })
+
   return {
+    login: logginMutation,
     getAllTask: getAllTaskQuery,
     addNewTask: addNewTodoMutation,
     toggleTask: toggleTaskMutation,

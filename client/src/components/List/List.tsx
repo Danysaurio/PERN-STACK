@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import ListItem from "../ListItem";
 import ListLoading from "./ListLoading";
 import { useFirebaseTodos } from "@/hooks/useFirestoreTodos";
 
 const List = () => {
+  const { login } = useFirebaseTodos();
+  useEffect(() => {
+    login.mutate();
+  }, []);
+
   const { data: todoList, isLoading, isError } = useFirebaseTodos().getAllTask;
 
   if (isError) return <p>Error al cargar las tareas.</p>;
